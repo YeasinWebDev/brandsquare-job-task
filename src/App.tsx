@@ -1,11 +1,14 @@
 import { useState } from "react"
-import { ArrowRight, Check, LockKeyhole, Mail } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { ArrowRight, LockKeyhole, Mail } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Dashboard } from "@/pages/dashboard/Dashboard"
 
 const LOGIN_STORAGE_KEY = "brandsquare_logged_in"
 
 export function App() {
+  const navigate = useNavigate()
   const [isLoggedIn, setIsLoggedIn] = useState(
     () => localStorage.getItem(LOGIN_STORAGE_KEY) === "true"
   )
@@ -14,40 +17,17 @@ export function App() {
     event.preventDefault()
     localStorage.setItem(LOGIN_STORAGE_KEY, "true")
     setIsLoggedIn(true)
+    navigate("/dashboard")
   }
 
   function handleLogout() {
     localStorage.removeItem(LOGIN_STORAGE_KEY)
     setIsLoggedIn(false)
+    navigate("/")
   }
 
   if (isLoggedIn) {
-    return (
-      <main className="grid min-h-svh place-items-center bg-[radial-gradient(circle_at_top_right,_#dff4e8_0,_#f4f7f4_38%,_#f4f7f4_100%)] text-[#17211d]">
-        <div className="w-[min(calc(100%-3rem),440px)] rounded-2xl border border-[#dfe7e1] bg-white p-14 text-center shadow-[0_24px_70px_rgba(23,33,29,0.09)] max-sm:p-8">
-          <div className="mx-auto mb-6 grid size-[54px] place-items-center rounded-full bg-[#dff4e8] text-[#19734d]">
-            <Check size={25} strokeWidth={2.5} />
-          </div>
-          <p className="mb-4 text-[0.72rem] font-extrabold tracking-[0.14em] text-[#19734d] uppercase">
-            Access granted
-          </p>
-          <h1 className="m-0 text-[2.6rem] leading-tight font-medium tracking-[-0.045em]">
-            You&apos;re signed in.
-          </h1>
-          <p className="mt-[1.1rem] leading-relaxed text-[#718078]">
-            Your local login session is active on this device.
-          </p>
-          <Button
-            className="mt-8"
-            type="button"
-            variant="outline"
-            onClick={handleLogout}
-          >
-            Sign out
-          </Button>
-        </div>
-      </main>
-    )
+    return <Dashboard onLogout={handleLogout} />
   }
 
   return (
@@ -108,7 +88,6 @@ export function App() {
                 type="email"
                 placeholder="you@company.com"
                 autoComplete="email"
-                required
               />
             </div>
 
@@ -130,7 +109,6 @@ export function App() {
                 type="password"
                 placeholder="Enter your password"
                 autoComplete="current-password"
-                required
               />
             </div>
 
