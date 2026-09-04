@@ -9,7 +9,6 @@ import {
 import {
   getAllTasks,
   getProjects,
-  type ProjectTask,
 } from "@/lib/project-storage"
 import { DueSoonTask } from "@/components/DueSoonTask"
 
